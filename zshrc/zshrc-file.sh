@@ -32,3 +32,16 @@ if [ "$OS" = 'Mac' ]; then
 elif [ "$OS" = 'Linux' ]; then
   source ~/github/dotfiles-latest/zshrc/zshrc-linux.sh
 fi
+
+
+# Created by `pipx` on 2025-07-02 07:40:33
+export PATH="$PATH:/Users/reach/.local/bin"
+alias python=python3
+alias pip=pip3
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/reach/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
+alias claude="/Users/reach/.claude/local/claude"

@@ -145,7 +145,7 @@ fi
 echo
 echo -e "${boldPurple}>>>>>>>>>>>>>>>>>>>>>>>>>>${noColor}"
 echo "Modifying .zprofile file"
-CHECK_LINE='eval "$(/opt/homebrew/bin/brew shellenv)"'
+CHECK_LINE='eval "$(/usr/local/bin/brew shellenv)"'
 
 # File to be checked and modified
 FILE="$HOME/.zprofile"
@@ -685,7 +685,7 @@ cat <<EOF >~/Library/LaunchAgents/com.linkarzu.karabiner.plist
     <string>com.linkarzu.karabiner</string>
     <key>ProgramArguments</key>
     <array>
-      <string>/opt/homebrew/bin/yarn</string>
+      <string>/usr/local/bin/yarn</string>
       <string>run</string>
       <string>watch</string>
     </array>
@@ -700,7 +700,7 @@ cat <<EOF >~/Library/LaunchAgents/com.linkarzu.karabiner.plist
     <key>EnvironmentVariables</key>
     <dict>
       <key>PATH</key>
-      <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin</string>
+      <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
     </dict>
   </dict>
 </plist>
@@ -837,7 +837,7 @@ echo "Configure fzf"
 # Check if fzf is already configured
 if [ ! -f "$HOME/.fzf.bash" ] && [ ! -f "$HOME/.fzf.zsh" ] && [ ! -f "$HOME/.fzf.fish" ]; then
   echo "fzf setup not found, running installation..."
-  echo -e "y\ny\nn" | /opt/homebrew/opt/fzf/install
+  echo -e "y\ny\nn" | /usr/local/opt/fzf/install
 else
   echo "fzf is already configured, skipping installation."
 fi
