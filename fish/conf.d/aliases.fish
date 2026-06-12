@@ -16,12 +16,6 @@ if command -q bat
     alias cata='bat --show-all --paging=never --style=plain'
 end
 
-# cd
-if command -q zoxide
-    alias cd='z'
-    alias cdd='z -'
-end
-
 # navigation
 alias ..='cd ..'
 alias ...='cd ../..'

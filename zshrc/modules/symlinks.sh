@@ -107,6 +107,7 @@ create_symlink ~/github/dotfiles-latest/sesh ~/.config/sesh
 create_symlink ~/github/dotfiles-latest/fish/conf.d/starship.fish ~/.config/fish/conf.d/starship.fish
 create_symlink ~/github/dotfiles-latest/fish/conf.d/aliases.fish ~/.config/fish/conf.d/aliases.fish
 create_symlink ~/github/dotfiles-latest/fish/conf.d/atuin.fish ~/.config/fish/conf.d/atuin.fish
+create_symlink ~/github/dotfiles-latest/fish/conf.d/zoxide.fish ~/.config/fish/conf.d/zoxide.fish
 create_symlink ~/github/dotfiles-latest/fish/fish_plugins ~/.config/fish/fish_plugins
 
 # # This is on the other repo where I keep my ssh config files
