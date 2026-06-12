@@ -60,8 +60,9 @@ else
 fi
 
 # ─── 4. Install tools ────────────────────────────────────────────────────────
-info "Installing tools (fish, starship, tmux, kitty)..."
-brew install fish starship tmux 2>/dev/null || true
+info "Installing tools..."
+brew install fish starship tmux atuin jq yq lazydocker k9s tldr \
+             dust duf glow gping 2>/dev/null || true
 brew install --cask kitty 2>/dev/null || true
 ok "Tools installed"
 
@@ -103,6 +104,19 @@ mkdir -p \
 ok "Directories ready"
 
 # ─── 7. Symlinks ─────────────────────────────────────────────────────────────
+# ─── 7. Fisher plugins ───────────────────────────────────────────────────────
+if command -v fisher &>/dev/null && [[ -f "$DOTFILES/fish/fish_plugins" ]]; then
+  info "Installing fish plugins..."
+  fish -c "fisher update" 2>/dev/null || true
+  ok "Fish plugins installed"
+elif ! command -v fisher &>/dev/null; then
+  info "Installing fisher..."
+  fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher" 2>/dev/null || true
+  fish -c "fisher update" 2>/dev/null || true
+  ok "Fisher and plugins installed"
+fi
+
+# ─── 8. Symlinks ─────────────────────────────────────────────────────────────
 info "Creating symlinks..."
 # Provide the color vars that symlinks.sh uses for output
 boldGreen="\033[1;32m"; boldYellow="\033[1;33m"
