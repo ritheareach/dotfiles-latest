@@ -22,6 +22,11 @@ if command -q zoxide
     alias cdd='z -'
 end
 
+# navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
 # git
 alias gs='git status'
 alias ga='git add'
