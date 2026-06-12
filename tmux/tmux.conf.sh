@@ -33,19 +33,15 @@ set -g prefix C-b
 # set-option -sa terminal-features ',xterm-256color:RGB'
 set -sg terminal-overrides ",*:RGB"
 
-# Undercurl support (works with kitty)
-# Fix found below in Folke's tokyonight theme :heart:
-# https://github.com/folke/tokyonight.nvim#fix-undercurls-in-tmux
-#
-# After reloading the configuration, you also have to kill the tmux session for
-# these changes to take effect
-set -g default-terminal "${TERM}"
+# Use tmux-256color so programs inside tmux see a widely-supported TERM value.
+# Tell tmux the outer terminal (kitty) supports RGB and undercurl.
+set -g default-terminal "tmux-256color"
+set -as terminal-features ",xterm-kitty:RGB"
 
-# # undercurl support
-# # I recently switched to Ghostty and I think this is not needed anymore
-# set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'
-# # underscore colours - needs tmux-3.0
-# set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
+# Undercurl support (kitty + tmux)
+set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'
+# Underscore colours - needs tmux-3.0
+set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
 
 # https://github.com/3rd/image.nvim/?tab=readme-ov-file#tmux
 # This is needed by the image.nvim plugin

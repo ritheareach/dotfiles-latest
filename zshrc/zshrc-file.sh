@@ -45,3 +45,8 @@ compinit
 # End of Docker CLI completions
 
 alias claude="/Users/reach/.claude/local/claude"
+export PATH=/opt/gcc-arm-none-eabi-10-2020-q4-major/bin:$PATH
+export PATH=/Users/reach/ardupilot/Tools/autotest:$PATH
+[[ -f /Users/reach/ardupilot/Tools/completion/completion.zsh ]] && source /Users/reach/ardupilot/Tools/completion/completion.zsh
+export PATH=/usr/local/opt/ccache/libexec:$PATH
+export TERM=xterm-256color
