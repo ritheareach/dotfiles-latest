@@ -44,8 +44,6 @@ touch "$ZPROFILE"
 
 # Remove any existing brew shellenv lines (handles duplicates from prior runs)
 grep -v "brew shellenv" "$ZPROFILE" > "$ZPROFILE.tmp" && mv "$ZPROFILE.tmp" "$ZPROFILE"
-
-# Write a single, correct brew shellenv line
 printf '\n# Configure shell for brew\neval "$(%s shellenv)"\n' "$BREW_BIN" >> "$ZPROFILE"
 ok "~/.zprofile configured (brew: $BREW_BIN)"
 
@@ -59,18 +57,29 @@ else
   ok "Dotfiles already present at $DOTFILES"
 fi
 
-# ─── 4. Install tools ────────────────────────────────────────────────────────
-info "Installing tools..."
-brew install fish starship tmux atuin jq yq lazydocker k9s tldr \
-             dust duf glow gping fzf zoxide fd 2>/dev/null || true
-brew install --cask kitty 2>/dev/null || true
-ok "Tools installed"
+# ─── 4. Install CLI tools ────────────────────────────────────────────────────
+info "Installing CLI tools..."
+brew install \
+  fish starship tmux \
+  neovim lazygit git-delta \
+  atuin fzf fd bat eza ripgrep zoxide \
+  jq yq \
+  lazydocker k9s \
+  tldr dust duf glow gping \
+  gh 2>/dev/null || true
+ok "CLI tools installed"
 
-# ─── 5. Set fish as default shell ────────────────────────────────────────────
+# ─── 5. Install casks ────────────────────────────────────────────────────────
+info "Installing casks..."
+brew install --cask \
+  kitty \
+  font-jetbrains-mono-nerd-font \
+  font-meslo-lg-nerd-font 2>/dev/null || true
+ok "Casks installed"
+
+# ─── 6. Set fish as default shell ────────────────────────────────────────────
 FISH_PATH="$(command -v fish)"
-if [[ -z "$FISH_PATH" ]]; then
-  die "fish not found after install — something went wrong"
-fi
+[[ -z "$FISH_PATH" ]] && die "fish not found after install"
 
 if ! grep -qF "$FISH_PATH" /etc/shells; then
   info "Adding fish to /etc/shells (requires sudo)..."
@@ -85,7 +94,7 @@ else
   ok "Fish is already the default shell"
 fi
 
-# ─── 6. Config directories ───────────────────────────────────────────────────
+# ─── 7. Config directories ───────────────────────────────────────────────────
 info "Creating config directories..."
 mkdir -p \
   ~/.config \
@@ -103,22 +112,8 @@ mkdir -p \
   ~/github/obsidian_main
 ok "Directories ready"
 
-# ─── 7. Symlinks ─────────────────────────────────────────────────────────────
-# ─── 7. Fisher plugins ───────────────────────────────────────────────────────
-if command -v fisher &>/dev/null && [[ -f "$DOTFILES/fish/fish_plugins" ]]; then
-  info "Installing fish plugins..."
-  fish -c "fisher update" 2>/dev/null || true
-  ok "Fish plugins installed"
-elif ! command -v fisher &>/dev/null; then
-  info "Installing fisher..."
-  fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher" 2>/dev/null || true
-  fish -c "fisher update" 2>/dev/null || true
-  ok "Fisher and plugins installed"
-fi
-
 # ─── 8. Symlinks ─────────────────────────────────────────────────────────────
 info "Creating symlinks..."
-# Provide the color vars that symlinks.sh uses for output
 boldGreen="\033[1;32m"; boldYellow="\033[1;33m"
 boldPurple="\033[1;35m"; noColor="\033[0m"
 export boldGreen boldYellow boldPurple noColor
@@ -126,11 +121,21 @@ export boldGreen boldYellow boldPurple noColor
 source "$DOTFILES/zshrc/modules/symlinks.sh"
 ok "Symlinks created"
 
+# ─── 9. Fisher + fish plugins ────────────────────────────────────────────────
+info "Installing fisher and fish plugins..."
+if ! fish -c "fisher --version" &>/dev/null; then
+  fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher" 2>/dev/null || true
+fi
+if [[ -f "$DOTFILES/fish/fish_plugins" ]]; then
+  fish -c "fisher update" 2>/dev/null || true
+fi
+ok "Fish plugins ready"
+
 # ─── Done ────────────────────────────────────────────────────────────────────
 echo ""
 echo -e "${GREEN}  All done!${NC}"
 echo ""
-echo "  Shell:    fish $($FISH_PATH --version 2>/dev/null | head -1)"
+echo "  Shell:    $($FISH_PATH --version 2>/dev/null)"
 echo "  Prompt:   starship $(starship --version 2>/dev/null | head -1)"
 echo "  Dotfiles: $DOTFILES"
 echo ""
