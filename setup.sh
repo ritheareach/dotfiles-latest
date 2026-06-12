@@ -62,7 +62,7 @@ fi
 # ─── 4. Install tools ────────────────────────────────────────────────────────
 info "Installing tools..."
 brew install fish starship tmux atuin jq yq lazydocker k9s tldr \
-             dust duf glow gping 2>/dev/null || true
+             dust duf glow gping fzf 2>/dev/null || true
 brew install --cask kitty 2>/dev/null || true
 ok "Tools installed"
 
